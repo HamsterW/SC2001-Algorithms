@@ -25,16 +25,26 @@ def insertion_count(data):
         data[pos] = curr
     return comparisons, data
 
+# MERGE SORT Comparison count
+merge_comp_count = 0
+def merge_comparison():    
+    global merge_comp_count 
+    i = merge_comp_count
+    return i
+
 # MERGE SORT
 def merge(list1,list2):
     i = j = 0
     newlist = []
-
+    global merge_comp_count
+    
     while i < len(list1) and j < len(list2):
         if list1[i] < list2[j]:
+            merge_comp_count += 1
             newlist.append(list1[i])
             i += 1
         else:
+            merge_comp_count += 1
             newlist.append(list2[j])
             j += 1
 
@@ -54,3 +64,11 @@ def merge_sort(data):
         sorted2 = merge_sort(upper)
         return merge(sorted1, sorted2)
     return data
+
+#Testing of merge_sort
+data = [4,3,2,1]
+sorted_data = merge_sort(data)
+count = merge_comparison()
+
+print(f"Sorted List is {sorted_data}")
+print(f"Number of comparisons is {count}.")

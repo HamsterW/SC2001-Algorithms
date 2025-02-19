@@ -56,7 +56,7 @@ def merge_sort(data):
     return data
 
 # MERGE SORT - w/ counting of no. of comparisons
-def merge(sorted1,sorted2):
+def merge2(sorted1,sorted2):
     list1 = sorted1[0]
     list2 = sorted2[0]
     i = j = 0
@@ -80,7 +80,7 @@ def merge(sorted1,sorted2):
 
     return newlist, comparisons
     
-def merge_sort(data):
+def merge_sort2(data):
     # Base Case
     if len(data) == 1:
         return data,0
@@ -89,9 +89,9 @@ def merge_sort(data):
         mid = len(data)//2
         lower = data[:mid]
         upper = data[mid:]
-        sorted1 = merge_sort(lower) #sorted 1 is a tuple (sorted lower list, number of comparisons for lower list)
-        sorted2 = merge_sort(upper) #sorted 2 is a tuple (sorted upper list, number of comparisons for upper list)
-        return merge(sorted1, sorted2)
+        sorted1 = merge_sort2(lower) #sorted 1 is a tuple (sorted lower list, number of comparisons for lower list)
+        sorted2 = merge_sort2(upper) #sorted 2 is a tuple (sorted upper list, number of comparisons for upper list)
+        return merge2(sorted1, sorted2)
 
 
     

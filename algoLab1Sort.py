@@ -45,36 +45,6 @@ def merge(list1,list2):
 
     return newlist
 
-# MERGE SORT Comparison count
-merge_comp_count = 0
-def merge_comparison():    
-    global merge_comp_count 
-    i = merge_comp_count
-    return i
-
-# MERGE SORT - w/ counting of no. of comparisons
-def merge(list1,list2):
-    i = j = 0
-    newlist = []
-    global merge_comp_count
-    
-    while i < len(list1) and j < len(list2):
-        if list1[i] < list2[j]:
-            merge_comp_count += 1
-            newlist.append(list1[i])
-            i += 1
-        else:
-            merge_comp_count += 1
-            newlist.append(list2[j])
-            j += 1
-
-    if i < len(list1):
-        newlist.extend(list1[i:])
-    else:
-        newlist.extend(list2[j:])
-
-    return newlist
-
 def merge_sort(data):
     if len(data) > 1:
         mid = len(data)//2
@@ -84,5 +54,44 @@ def merge_sort(data):
         sorted2 = merge_sort(upper)
         return merge(sorted1, sorted2)
     return data
+
+# MERGE SORT - w/ counting of no. of comparisons
+def merge(sorted1,sorted2):
+    list1 = sorted1[0]
+    list2 = sorted2[0]
+    i = j = 0
+    newlist = []
+    comparisons = sorted1[1]+sorted2[1]
+    
+    while i < len(list1) and j < len(list2):
+        if list1[i] < list2[j]:
+            comparisons += 1
+            newlist.append(list1[i])
+            i += 1
+        else:
+            comparisons += 1
+            newlist.append(list2[j])
+            j += 1
+
+    if i < len(list1):
+        newlist.extend(list1[i:])
+    else:
+        newlist.extend(list2[j:])
+
+    return newlist, comparisons
+    
+def merge_sort(data):
+    # Base Case
+    if len(data) == 1:
+        return data,0
+    # Recursion
+    elif len(data) > 1:
+        mid = len(data)//2
+        lower = data[:mid]
+        upper = data[mid:]
+        sorted1 = merge_sort(lower) #sorted 1 is a tuple (sorted lower list, number of comparisons for lower list)
+        sorted2 = merge_sort(upper) #sorted 2 is a tuple (sorted upper list, number of comparisons for upper list)
+        return merge(sorted1, sorted2)
+
 
     

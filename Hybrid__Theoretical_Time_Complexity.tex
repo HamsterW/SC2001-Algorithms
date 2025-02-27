@@ -1,0 +1,79 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage{amsmath}
+
+\title{Theoretical Analysis of Hybrid Algorithm}
+%\author{Jonathan Soh}
+%\date{February 2025}
+\setlength{\parindent}{0pt} %Removes all indent from the document
+
+\begin{document}
+
+%\maketitle
+
+\section{Overview}
+The idea is to set a small integer S as a threshold for the size of subarrays. Once the size of a subarray in a recursive call of Mergesort is less than or equal to S, the algorithm will switch to Insertion Sort, which is efficient for small-sized input. 
+
+\vspace{10pt}
+
+Its size is defined as
+\[ \frac{S}{2} < \frac{n}{2^c} \leq S\]
+Where c is the number of times an array is halved
+
+\section{Time complexity of Insertion Sort for S}
+Define m such that:
+\[ m = \frac{n}{2^c} \]
+Average number of key comparisons per iteration:
+\[ \frac{1}{i} \sum_{j=1}^{i}j \]
+There are m-1 iterations, so the total number of key comparisons is:
+\begin{equation*}
+\begin{split}
+W(m) & =\sum_{i=1}^{m-1} \frac{1}{i} \sum_{j=1}^{i}j \\
+& = \sum_{i=1}^{m-1} \frac{1}{i} (\frac{i(i+1)}{2}) \\
+& = \frac{1}{2} \sum_{i=1}^{m-1}(i+1) \\
+& = \frac{1}{2} \times \frac{(m+2)(m-1)}{2} \\
+& = \frac{m^2}{4} + \frac{m}{4} - \frac{1}{2} \\
+& = \frac{(\frac{n^2}{2^c})^2}{4} + \frac{(\frac{n^2}{2^c})}{4} - \frac{1}{2} \\
+& = \frac{n^2}{2^{2c+2}} + \frac{n}{2^{c+2}} - \frac{1}{2}
+\end{split}
+\end{equation*}
+
+\section{Time complexity of Hybrid Algorithm}
+Let $n = 2^k$ such that $\frac{n}{2^c} = 2^{k-c}$ and $\frac{S}{2} < 2^{k-c} \leq S$:
+\begin{equation*}
+\begin{split}
+W(n) & = W(\frac{n}{2}) + W(\frac{n}{2}) + n - 1 \\
+& = 2W(\frac{n}{2}) + n - 1 \\
+& = 2^1 \times W(2^{k-1}) + 2^k - 1 \\
+& = 2(2W(2^{k-2}) + 2^{k-1} - 1) + 2^k - 1 \\
+& = 2^2 \times W(2^{k-2}) + 2(2^k) - (1+2) \\
+& = 2^2(2W(2^{k-3}) + 2^{k-2} - 1) + 2(2^k) - (1+2) \\
+& = 2^3 \times W(2^{k-3}) + 3(2^k) - (1+2+4) \\
+& \dots \\
+& = 2^c \times W(2^{k-c}) + c(2^k) - (1+2+4+\dots+2^{c-1}) \\
+& = 2^c \times W(2^{k-c}) + nc - (2^c-1) 
+\end{split}
+\end{equation*}
+
+As seen above, the time complexity for $W(2^{k-c})$ when the array goes into insertion sort is given by:
+
+\[ W(2^{k-c}) =\frac{n^2}{2^{2c+2}} + \frac{n}{2^{c+2}} - \frac{1}{2} \]
+
+Therefore:
+
+\begin{equation*}
+\begin{split}
+W(n) & = 2^c \times (\frac{n^2}{2^{2c+2}} + \frac{n}{2^{c+2}} - \frac{1}{2}) + nc - (2^c-1) \\
+& = \frac{n^2}{2^{c+2}} + \frac{n}{2^2} - 2^{c-1} + nc - (2^c-1)
+\end{split}
+\end{equation*}
+
+Let $\frac{n}{2^c} = S$, $2^c = \frac{n}{S}$, $c = log(\frac{n}{S})$:
+
+\begin{equation*}
+\begin{split}
+W(n) & = \frac{nS}{4} + \frac{n}{4} - \frac{n}{2S} + nlog(\frac{n}{S}) - \frac{n}{S} + 1\\
+& = \mathcal{O}(nlog(n))
+\end{split}
+\end{equation*}
+
+\end{document}
